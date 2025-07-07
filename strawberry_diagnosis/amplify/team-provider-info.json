@@ -1,0 +1,26 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-strawberrydiagnosis-dev-f022b-authRole",
+      "UnauthRoleArn": "arn:aws:iam::958711993095:role/amplify-strawberrydiagnosis-dev-f022b-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::958711993095:role/amplify-strawberrydiagnosis-dev-f022b-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-strawberrydiagnosis-dev-f022b-deployment",
+      "UnauthRoleName": "amplify-strawberrydiagnosis-dev-f022b-unauthRole",
+      "StackName": "amplify-strawberrydiagnosis-dev-f022b",
+      "StackId": "arn:aws:cloudformation:us-east-1:958711993095:stack/amplify-strawberrydiagnosis-dev-f022b/5adc26b0-401a-11f0-8ff4-0affcbb2710f",
+      "AmplifyAppId": "d1v1iucuf5b61t"
+    },
+    "categories": {
+      "auth": {
+        "strawberryAuth": {}
+      },
+      "api": {
+        "strawberrydiagnosis": {}
+      },
+      "storage": {
+        "strawdiagnosis": {}
+      }
+    }
+  }
+}
