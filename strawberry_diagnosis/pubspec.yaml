@@ -21,6 +21,7 @@ dependencies:
   firebase_analytics: ^11.5.0
   cloud_firestore: ^5.6.9 
   google_sign_in: ^6.2.1
+  flutter_svg: ^2.0.7
 
 dev_dependencies:
   flutter_test:
@@ -30,4 +31,16 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/amplifyconfiguration.dart
+    - lib/amplifyconfiguration.dart
+    - images/logo.jpg
+    - assets/images/hero_card_picture.jpg
+    - assets/images/recent_scan_placeholder.jpg
+    - assets/illustrations/undraw_no-data_ig65.svg
+
+
+fonts:
+    - family: DM Sans
+      fonts:
+        - asset: fonts/DM_Sans/static/DMSans-Regular.ttf
+        - asset: fonts/DM_Sans/static/DMSans-Bold.ttf
+          weight: 700

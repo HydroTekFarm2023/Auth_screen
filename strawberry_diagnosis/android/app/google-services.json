@@ -1,45 +1,51 @@
 {
   "project_info": {
-    "project_number": "1026608841497",
-    "project_id": "plant-health-695dc",
-    "storage_bucket": "plant-health-695dc.firebasestorage.app"
+    "project_number": "184330974752",
+    "project_id": "hydrotex-auth",
+    "storage_bucket": "hydrotex-auth.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1026608841497:android:59f0ed67f4a83ae2163b88",
+        "mobilesdk_app_id": "1:184330974752:android:d17f60862cdeefbe37ae45",
         "android_client_info": {
           "package_name": "com.example.strawberry_diagnosis"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "184330974752-oedtiu3jd5eem2m23haeve4qiablefk1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.strawberry_diagnosis",
+            "certificate_hash": "7cae5597b845252861433cc2fb71029219272306"
+          }
+        },
+        {
+          "client_id": "184330974752-cphi5kt1bfjbivjc64ea5739j10lp4mb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyDPf6aIGeaDpazVGLHAhWNKZ5FU0RIubAQ"
+          "current_key": "AIzaSyCZtnd3y1ZnV1R1OU5eYfOELmvF6BN1Aa0"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1026608841497:android:50757b2620d2d921163b88",
-        "android_client_info": {
-          "package_name": "com.planthealth.analyzer"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDPf6aIGeaDpazVGLHAhWNKZ5FU0RIubAQ"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "184330974752-cphi5kt1bfjbivjc64ea5739j10lp4mb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "184330974752-5h9jfga63a1j0hm2v9m5cmll5i9n1en5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.strawberryDiagnosis"
+              }
+            }
+          ]
         }
       }
     }

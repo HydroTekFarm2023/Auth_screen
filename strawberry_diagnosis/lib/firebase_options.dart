@@ -41,48 +41,50 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyC_AXOxArgta10S8CWalIHA96d1sLah8r0',
-    appId: '1:1026608841497:web:3bc458ec5ace250a163b88',
-    messagingSenderId: '1026608841497',
-    projectId: 'plant-health-695dc',
-    authDomain: 'plant-health-695dc.firebaseapp.com',
-    storageBucket: 'plant-health-695dc.firebasestorage.app',
-    measurementId: 'G-H43KNB75DD',
+    apiKey: 'AIzaSyAQtFTgYl8IlVrxLYBDqcfhp7Bx23sTYfE',
+    appId: '1:184330974752:web:eab3b4d2d5509a2f37ae45',
+    messagingSenderId: '184330974752',
+    projectId: 'hydrotex-auth',
+    authDomain: 'hydrotex-auth.firebaseapp.com',
+    storageBucket: 'hydrotex-auth.firebasestorage.app',
+    measurementId: 'G-5HYK81FR0V',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDPf6aIGeaDpazVGLHAhWNKZ5FU0RIubAQ',
-    appId: '1:1026608841497:android:59f0ed67f4a83ae2163b88',
-    messagingSenderId: '1026608841497',
-    projectId: 'plant-health-695dc',
-    storageBucket: 'plant-health-695dc.firebasestorage.app',
+    apiKey: 'AIzaSyCZtnd3y1ZnV1R1OU5eYfOELmvF6BN1Aa0',
+    appId: '1:184330974752:android:d17f60862cdeefbe37ae45',
+    messagingSenderId: '184330974752',
+    projectId: 'hydrotex-auth',
+    storageBucket: 'hydrotex-auth.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAnr_oZlzw6lJm_PgXK0VlegxZfJqlfQ7E',
-    appId: '1:1026608841497:ios:ea210a480e52685f163b88',
-    messagingSenderId: '1026608841497',
-    projectId: 'plant-health-695dc',
-    storageBucket: 'plant-health-695dc.firebasestorage.app',
+    apiKey: 'AIzaSyBdv2zvjqTZ6b71sfAbZQbGxRn7S4RbyIA',
+    appId: '1:184330974752:ios:9861439c7af7ff9b37ae45',
+    messagingSenderId: '184330974752',
+    projectId: 'hydrotex-auth',
+    storageBucket: 'hydrotex-auth.firebasestorage.app',
+    iosClientId: '184330974752-5h9jfga63a1j0hm2v9m5cmll5i9n1en5.apps.googleusercontent.com',
     iosBundleId: 'com.example.strawberryDiagnosis',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyAnr_oZlzw6lJm_PgXK0VlegxZfJqlfQ7E',
-    appId: '1:1026608841497:ios:ea210a480e52685f163b88',
-    messagingSenderId: '1026608841497',
-    projectId: 'plant-health-695dc',
-    storageBucket: 'plant-health-695dc.firebasestorage.app',
+    apiKey: 'AIzaSyBdv2zvjqTZ6b71sfAbZQbGxRn7S4RbyIA',
+    appId: '1:184330974752:ios:9861439c7af7ff9b37ae45',
+    messagingSenderId: '184330974752',
+    projectId: 'hydrotex-auth',
+    storageBucket: 'hydrotex-auth.firebasestorage.app',
+    iosClientId: '184330974752-5h9jfga63a1j0hm2v9m5cmll5i9n1en5.apps.googleusercontent.com',
     iosBundleId: 'com.example.strawberryDiagnosis',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyC_AXOxArgta10S8CWalIHA96d1sLah8r0',
-    appId: '1:1026608841497:web:202800f29df06e79163b88',
-    messagingSenderId: '1026608841497',
-    projectId: 'plant-health-695dc',
-    authDomain: 'plant-health-695dc.firebaseapp.com',
-    storageBucket: 'plant-health-695dc.firebasestorage.app',
-    measurementId: 'G-NG5DKGK2FX',
+    apiKey: 'AIzaSyAQtFTgYl8IlVrxLYBDqcfhp7Bx23sTYfE',
+    appId: '1:184330974752:web:e54d257b8e50993537ae45',
+    messagingSenderId: '184330974752',
+    projectId: 'hydrotex-auth',
+    authDomain: 'hydrotex-auth.firebaseapp.com',
+    storageBucket: 'hydrotex-auth.firebasestorage.app',
+    measurementId: 'G-63KD3YLDE4',
   );
 }
