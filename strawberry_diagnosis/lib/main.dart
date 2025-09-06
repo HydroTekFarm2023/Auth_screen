@@ -1,9 +1,10 @@
+import 'firebase_env_config.dart'; // ✅ using env config instead of firebase_options.dart
+import 'login_screen.dart';
+import 'home_screen.dart';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart'; // Firebase core
-import 'package:firebase_auth/firebase_auth.dart'; // Firebase auth
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_api/amplify_api.dart'; // GraphQL API
 import 'package:image_picker/image_picker.dart';
@@ -11,48 +12,17 @@ import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:path/path.dart' as path;
 
-import 'amplifyconfiguration.dart'; // Make sure this exists
-import 'login_screen.dart'; // Import your login screen
-
-import 'firebase_options.dart';
+import 'amplifyconfiguration.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(const AppWrapper());
-}
 
-/// This widget decides whether to show the login screen or the main app
-class AppWrapper extends StatelessWidget {
-  const AppWrapper({super.key});
+  // ✅ Initialize Firebase from env config
+  final firebaseOptions = await getFirebaseOptionsFromEnv();
+  await Firebase.initializeApp(options: firebaseOptions);
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Strawberry Diagnosis',
-      debugShowCheckedModeBanner: false,
-      home: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            // Show loading while checking auth state
-            return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            );
-          }
-          if (snapshot.hasData) {
-            // User is logged in
-            return const StrawberryDiagnosisApp();
-          } else {
-            // User is NOT logged in
-            return const LoginScreen();
-          }
-        },
-      ),
-    );
-  }
+  runApp(const StrawberryDiagnosisApp());
 }
 
 class StrawberryDiagnosisApp extends StatefulWidget {
@@ -64,7 +34,7 @@ class StrawberryDiagnosisApp extends StatefulWidget {
 
 class _StrawberryDiagnosisAppState extends State<StrawberryDiagnosisApp> {
   bool _amplifyConfigured = false;
-  String _status = 'App initialized';
+  String _status = 'Initializing...';
   List<Diagnosis> _diagnoses = [];
   XFile? _selectedImage;
 
@@ -84,26 +54,25 @@ class _StrawberryDiagnosisAppState extends State<StrawberryDiagnosisApp> {
         _amplifyConfigured = true;
         _status = 'Amplify configured';
       });
+      await _fetchDiagnoses();
     } catch (e) {
       setState(() => _status = 'Failed to configure Amplify: $e');
     }
   }
 
-  Future<void> _pickImage(ImageSource source) async {
+  Future<void> _pickImage() async {
     final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: source);
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile == null) return;
     setState(() {
       _selectedImage = pickedFile;
-      _status = 'Image selected. Ready to upload or delete.';
+      _status = 'Image selected';
     });
   }
 
   Future<void> _uploadSelectedImage() async {
     if (_selectedImage == null) return;
-    setState(() {
-      _status = 'Uploading image...';
-    });
+    setState(() => _status = 'Uploading image...');
 
     final fileKey =
         'public/image_${DateTime.now().millisecondsSinceEpoch}${path.extension(_selectedImage!.path)}';
@@ -121,24 +90,22 @@ class _StrawberryDiagnosisAppState extends State<StrawberryDiagnosisApp> {
         _status = 'Image uploaded: ${fileUrl.url}';
         _selectedImage = null;
       });
+
+      await _fetchDiagnoses();
     } catch (e) {
-      setState(() {
-        _status = 'Failed to upload image: $e';
-      });
+      setState(() => _status = 'Failed to upload image: $e');
     }
   }
 
   void _deleteSelectedImage() {
     setState(() {
       _selectedImage = null;
-      _status = 'Image selection cleared.';
+      _status = 'Selection cleared';
     });
   }
 
   Future<void> _fetchDiagnoses() async {
-    setState(() {
-      _status = 'Fetching diagnoses...';
-    });
+    setState(() => _status = 'Fetching diagnoses...');
 
     const String graphQLDocument = '''query ListDiagnoses {
       listDiagnoses {
@@ -155,22 +122,25 @@ class _StrawberryDiagnosisAppState extends State<StrawberryDiagnosisApp> {
     }''';
 
     try {
-      final request = GraphQLRequest<String>(
-        document: graphQLDocument,
-      );
-
+      final request = GraphQLRequest<String>(document: graphQLDocument);
       final response = await Amplify.API.query(request: request).response;
 
-      final decoded = jsonDecode(response.data!);
-      final items = decoded['listDiagnoses']['items'] as List;
+      if (response.data == null) {
+        setState(() {
+          _diagnoses = [];
+          _status = 'No data';
+        });
+        return;
+      }
 
-      final diagnoses = items
+      final decoded = jsonDecode(response.data!);
+      final items = (decoded['listDiagnoses']['items'] as List)
           .where((item) => item != null)
           .map((item) => Diagnosis.fromJson(item as Map<String, dynamic>))
           .toList();
 
       setState(() {
-        _diagnoses = diagnoses;
+        _diagnoses = items;
         _status = 'Fetched ${_diagnoses.length} diagnoses';
       });
     } catch (e) {
@@ -183,84 +153,19 @@ class _StrawberryDiagnosisAppState extends State<StrawberryDiagnosisApp> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Strawberry Diagnosis'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            tooltip: 'Logout',
-            onPressed: () async {
-              await FirebaseAuth.instance.signOut();
-            },
-          )
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            ElevatedButton(
-              onPressed: _amplifyConfigured
-                  ? () => _pickImage(ImageSource.gallery)
-                  : null,
-              child: const Text('Pick Image from Gallery'),
-            ),
-            const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed:
-                  _amplifyConfigured ? () => _pickImage(ImageSource.camera) : null,
-              child: const Text('Take Image with Camera'),
-            ),
-            if (_selectedImage != null) ...[
-              const SizedBox(height: 12),
-              Image.file(
-                File(_selectedImage!.path),
-                height: 200,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: _uploadSelectedImage,
-                    child: const Text('Upload'),
-                  ),
-                  const SizedBox(width: 12),
-                  ElevatedButton(
-                    onPressed: _deleteSelectedImage,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                    ),
-                    child: const Text('Delete'),
-                  ),
-                ],
-              ),
-            ],
-            ElevatedButton(
-              onPressed: _amplifyConfigured ? _fetchDiagnoses : null,
-              child: const Text('Fetch Diagnoses from DynamoDB'),
-            ),
-            const SizedBox(height: 12),
-            Text(_status),
-            const SizedBox(height: 12),
-            Expanded(
-              child: ListView.builder(
-                itemCount: _diagnoses.length,
-                itemBuilder: (context, index) {
-                  final diag = _diagnoses[index];
-                  return Card(
-                    margin: const EdgeInsets.symmetric(vertical: 8),
-                    child: ListTile(
-                      title: Text('${diag.disease} (${diag.severity})'),
-                      subtitle: Text(
-                          'Image: ${diag.imageKey}\nResult: ${diag.result}\nTreatment: ${diag.treatment}\nTime: ${diag.createdAt}'),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
+    return MaterialApp(
+      title: 'Strawberry Diagnosis',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(primarySwatch: Colors.green),
+      home: HomeScreen(
+        status: _status,
+        diagnoses: _diagnoses,
+        selectedImage: _selectedImage,
+        amplifyConfigured: _amplifyConfigured,
+        onPickImage: _pickImage,
+        onUploadImage: _uploadSelectedImage,
+        onDeleteImage: _deleteSelectedImage,
+        onFetchDiagnoses: _fetchDiagnoses,
       ),
     );
   }
